@@ -1,7 +1,6 @@
-#include "app/example.h"
+#include <iostream>
 
 int main() {
-    app::Example ex("MainObject", 123);
-    ex.greet();
+    std::cout << "Horizon Raycaster";
     return 0;
 }
