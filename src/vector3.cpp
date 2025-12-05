@@ -76,3 +76,8 @@ vector3 cross(const vector3& u, const vector3& v) {
 vector3 unit_vector(const vector3& v) {
     return v / v.length();
 }
+
+bool vector3::near_zero() const {
+    const auto s = 1e-8;
+    return (std::fabs(x) < s) && (std::fabs(y) < s) && (std::fabs(z) < s);
+}

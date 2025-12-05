@@ -22,6 +22,8 @@ public:
 
     double length_squared() const;
     double length() const;
+
+    bool near_zero() const;
 };
 
 using point3 = vector3;
