@@ -12,7 +12,7 @@ static inline double clamp(double x, double min_val, double max_val) {
     return x;
 }
 
-RGB write_color(const color& pixel_color) {
+RGB to_rgb(const color& pixel_color) {
     double r = linear_to_gamma(pixel_color.X());
     double g = linear_to_gamma(pixel_color.Y());
     double b = linear_to_gamma(pixel_color.Z());
