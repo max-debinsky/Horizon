@@ -10,9 +10,15 @@ int main() {
     const int height = 400;
 
     std::vector<std::vector<RGB>> framebuffer(height, std::vector<RGB>(width));
+
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            color c(x, y , 126);
+            color c(
+                double(x) / width,   // R
+                double(y) / height,  // G
+                0.5                  // B
+            );
+
             framebuffer[y][x] = to_rgb(c);
         }
     }

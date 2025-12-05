@@ -13,9 +13,9 @@ static inline double clamp(double x, double min_val, double max_val) {
 }
 
 RGB to_rgb(const color& pixel_color) {
-    double r = linear_to_gamma(pixel_color.X());
-    double g = linear_to_gamma(pixel_color.Y());
-    double b = linear_to_gamma(pixel_color.Z());
+    double r = linear_to_gamma(pixel_color.x);
+    double g = linear_to_gamma(pixel_color.y);
+    double b = linear_to_gamma(pixel_color.z);
 
     RGB px;
     px.r = static_cast<unsigned char>(256 * clamp(r, 0.0, 0.999));
