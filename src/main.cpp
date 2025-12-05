@@ -1,4 +1,8 @@
 #include "horizon/output.h"
+#include "horizon/color.h"
+#include "horizon/vector3.h"
+#include "horizon/rgb.h"
+
 #include <iostream>
 
 int main() {
@@ -8,7 +12,8 @@ int main() {
     std::vector<std::vector<RGB>> framebuffer(height, std::vector<RGB>(width));
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            framebuffer[y][x] = { (unsigned char)x, (unsigned char)y, 128 };
+            color c(x, y , 126);
+            framebuffer[y][x] = to_rgb(c);
         }
     }
 
