@@ -1,3 +1,4 @@
+#include "horizon/material.h"
 #include "horizon/renderer.h"
 #include "horizon/utility.h"
 #include <iostream>
@@ -5,8 +6,8 @@
 Renderer::Renderer(int image_width, int image_height, int samples_per_pixel, int max_depth)
     : width(image_width), height(image_height), samples(samples_per_pixel), max_depth(max_depth) {}
 
-void Renderer::render(const Camera& cam, const RayObject& world, std::ostream& out) {
-    out << "P3\n" << width << ' ' << height << "\n255\n";
+void Renderer::render(const Camera& cam, const RayObject& world, std::vector<std::vector<RGB>>& framebuffer) {
+    framebuffer.resize(height, std::vector<RGB>(width));
 
     for (int j = height-1; j >= 0; --j) {
         std::clog << "\rScanlines remaining: " << j << ' ' << std::flush;
@@ -18,7 +19,8 @@ void Renderer::render(const Camera& cam, const RayObject& world, std::ostream& o
                 ray r = cam.get_ray(u, v);
                 pixel_color += ray_color(r, max_depth, world);
             }
-            write_color(out, pixel_color, samples);
+
+            framebuffer[height - j - 1][i] = to_rgb(pixel_color / static_cast<double>(samples));
         }
     }
     std::clog << "\rDone.                 \n";
@@ -37,7 +39,7 @@ color Renderer::ray_color(const ray& r, int depth, const RayObject& world) const
         return color(0,0,0);
     }
 
-    vec3 unit_dir = unit_vector(r.direction());
+    vector3 unit_dir = unit_vector(r.direction());
     double t = 0.5*(unit_dir.y + 1.0);
     return (1.0 - t)*color(1.0,1.0,1.0) + t*color(0.5,0.7,1.0);
 }
