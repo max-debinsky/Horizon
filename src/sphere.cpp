@@ -1,4 +1,5 @@
 #include "horizon/sphere.h"
+#include "horizon/interval.h"
 #include <cmath>
 
 Sphere::Sphere(const point3& center, double radius, std::shared_ptr<Material> mat)
@@ -12,9 +13,11 @@ point3 Sphere::center_at(double time) const {
     return center_motion.origin() + time * center_motion.direction();
 }
 
-bool Sphere::hit(const ray& r, Interval ray_t, HitRecord& rec) const {
-    point3 current_center = center_at(r.time());
+bool Sphere::hit(const ray& r, interval ray_t, HitRecord& rec) const {
+    // Stationary sphere center
+    point3 current_center = center_motion.origin();  // just use fixed center
     vector3 oc = r.origin() - current_center;
+
     auto a = r.direction().length_squared();
     auto half_b = dot(oc, r.direction());
     auto c = oc.length_squared() - radius * radius;
@@ -24,6 +27,7 @@ bool Sphere::hit(const ray& r, Interval ray_t, HitRecord& rec) const {
 
     auto sqrtd = std::sqrt(discriminant);
 
+    // Check both roots
     auto root = (-half_b - sqrtd) / a;
     if (!ray_t.surrounds(root)) {
         root = (-half_b + sqrtd) / a;

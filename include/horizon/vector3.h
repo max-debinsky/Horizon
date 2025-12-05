@@ -24,6 +24,9 @@ public:
     double length() const;
 
     bool near_zero() const;
+
+    static vector3 random();
+    static vector3 random(double min, double max);
 };
 
 using point3 = vector3;

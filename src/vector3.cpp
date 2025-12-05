@@ -1,4 +1,5 @@
 #include "horizon/vector3.h"
+#include "horizon/utility.h"
 
 vector3::vector3() : x(0), y(0), z(0) {}
 vector3::vector3(double _x, double _y, double _z) : x(_x), y(_y), z(_z) {}
@@ -80,4 +81,14 @@ vector3 unit_vector(const vector3& v) {
 bool vector3::near_zero() const {
     const auto s = 1e-8;
     return (std::fabs(x) < s) && (std::fabs(y) < s) && (std::fabs(z) < s);
+}
+
+vector3 vector3::random() {
+    return vector3(random_double(), random_double(), random_double());
+}
+
+vector3 vector3::random(double min, double max) {
+    return vector3(min + (max - min) * random_double(),
+                   min + (max - min) * random_double(),
+                   min + (max - min) * random_double());
 }

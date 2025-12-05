@@ -2,6 +2,7 @@
 
 #include "horizon/ray.h"
 #include "horizon/vector3.h"
+#include "horizon/interval.h"
 #include <memory>
 
 using std::shared_ptr;
@@ -21,16 +22,9 @@ struct HitRecord {
     }
 };
 
-// Time interval for ray parameter
-struct Interval {
-    double min;
-    double max;
-    Interval(double mi, double ma) : min(mi), max(ma) {}
-};
-
 class RayObject {
 public:
     virtual ~RayObject() = default;
 
-    virtual bool hit(const ray& r, Interval ray_t, HitRecord& rec) const = 0;
+    virtual bool hit(const ray& r, interval ray_t, HitRecord& rec) const = 0;
 };

@@ -15,7 +15,7 @@ public:
 
     void add(shared_ptr<RayObject> object);
 
-    bool hit(const ray& r, Interval ray_t, HitRecord& rec) const override;
+    bool hit(const ray& r, interval ray_t, HitRecord& rec) const override;
 
 private:
     std::vector<shared_ptr<RayObject>> objects;

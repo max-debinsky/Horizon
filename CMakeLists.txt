@@ -18,6 +18,7 @@ set(SRC_FILES
     src/renderer.cpp
     src/sphere.cpp
     src/interval.cpp
+    src/utility.cpp
 )
 
 add_executable(horizon ${SRC_FILES})

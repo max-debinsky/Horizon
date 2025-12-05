@@ -14,7 +14,7 @@ public:
     // Moving sphere
     Sphere(const point3& center0, const point3& center1, double radius, std::shared_ptr<Material> mat);
 
-    bool hit(const ray& r, Interval ray_t, HitRecord& rec) const override;
+    bool hit(const ray& r, interval ray_t, HitRecord& rec) const override;
 
 private:
     ray center_motion;

@@ -10,6 +10,8 @@ constexpr double M_PI = 3.14159265358979323846;
 
 double random_double();
 
+double random_double(double min, double max);
+
 vector3 random_in_unit_sphere();
 
 vector3 random_in_unit_disk();

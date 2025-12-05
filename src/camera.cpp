@@ -16,7 +16,7 @@ Camera::Camera(point3 lookfrom, point3 lookat, vector3 vup, double vfov, double 
 
     origin = lookfrom;
     horizontal = viewport_width * u;
-    vertical = -viewport_height * v; // downwards in image
+    vertical = viewport_height * v; // downwards in image
     lower_left_corner = origin - horizontal/2 - vertical/2 - focus_dist * w;
 }
 

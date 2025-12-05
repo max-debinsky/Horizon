@@ -31,7 +31,7 @@ color Renderer::ray_color(const ray& r, int depth, const RayObject& world) const
         return color(0,0,0);
 
     HitRecord rec;
-    if (world.hit(r, Interval(0.001, 1e10), rec)) {
+    if (world.hit(r, interval(0.001, 1e10), rec)) {
         ray scattered;
         color attenuation;
         if (rec.mat->scatter(r, rec, attenuation, scattered))
