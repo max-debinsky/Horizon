@@ -34,10 +34,8 @@ bool Metal::scatter(const ray& r_in, const HitRecord& rec, color& attenuation, r
 }
 
 // ------------------ Dielectric ------------------
-Dielectric::Dielectric(double ri) : refraction_index(ri) {}
-
 bool Dielectric::scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const {
-    attenuation = color(1.0, 1.0, 1.0);
+    attenuation = attenuation_color; // Use the glass color
 
     double ri = rec.front_face ? (1.0 / refraction_index) : refraction_index;
     vector3 unit_direction = unit_vector(r_in.direction());

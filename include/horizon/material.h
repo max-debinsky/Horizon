@@ -36,12 +36,14 @@ private:
 
 class Dielectric : public Material {
 public:
-    explicit Dielectric(double refraction_index);
+    Dielectric(double ri, const color& color_attenuation = color(1.0,1.0,1.0))
+        : refraction_index(ri), attenuation_color(color_attenuation) {}
 
     bool scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const override;
 
 private:
     double refraction_index;
+    color attenuation_color;
 
     static double reflectance(double cosine, double refraction_index);
 };
