@@ -10,6 +10,7 @@ set(SRC_FILES
     src/color.cpp
     src/rgb.cpp
     src/vector3.cpp
+    src/ray.cpp
 )
 
 add_executable(horizon ${SRC_FILES})
