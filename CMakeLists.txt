@@ -16,6 +16,7 @@ set(SRC_FILES
     src/material.cpp
     src/camera.cpp
     src/renderer.cpp
+    src/sphere.cpp
 )
 
 add_executable(horizon ${SRC_FILES})
