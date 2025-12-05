@@ -11,14 +11,15 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <conio.h>
 
 int main() {
     // Image
     const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 800;
+    const int image_width = 200;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 500;
-    const int max_depth = 50;
+    const int samples_per_pixel = 200;
+    const int max_depth = 10;
 
     // World (scene container)
     ObjectGroup world;
@@ -32,18 +33,16 @@ int main() {
     auto material_glass    = std::make_shared<Dielectric>(1.5);                  // glass
     auto blue_ice          = std::make_shared<Dielectric>(1.31, color(0.8, 0.8, 1.0));   // blue glass
     auto material_small    = std::make_shared<Lambertian>(color(0.9, 0.9, 0.2)); // yellow small
+    auto light_source      = std::make_shared<LightEmitter>(color(1, 1, 1));
 
     // Ground
     world.add(std::make_shared<Sphere>(point3(0, -1000, 0), 1000, material_ground)); // large ground sphere
 
     // Main scene spheres
-    world.add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, blue_ice));
-    world.add(std::make_shared<Sphere>(point3(0, 1, 0), 0.8, material_glass));
-    world.add(std::make_shared<Sphere>(point3(-2, 0.7, 0), 0.7, blue_ice));
-    world.add(std::make_shared<Sphere>(point3(-3, 2, -5), 2.0, material_green));
-    world.add(std::make_shared<Sphere>(point3(-2, 0.7, 0), 0.6, material_glass));
+    world.add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, material_red));
+    world.add(std::make_shared<Sphere>(point3(-2, 0.7, 0), 0.7, material_metal));
     world.add(std::make_shared<Sphere>(point3(2, 1.2, 0), 1.2, blue_ice));
-    world.add(std::make_shared<Sphere>(point3(2, 1.2, 0), 1, material_glass));
+    world.add(std::make_shared<Sphere>(point3(-3, 2, -5), 2.0, light_source));
 
     world.add(std::make_shared<Sphere>(point3(1.6, 0.3, 1.5), 0.3, material_metal));
 
@@ -71,5 +70,7 @@ int main() {
         std::cerr << "Failed to save render.png.\n";
     }
 
+    std::cout << "Press any key to exit...";
+    _getch();   // waits for any key
     return 0;
 }

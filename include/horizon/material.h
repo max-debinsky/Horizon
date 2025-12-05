@@ -11,6 +11,8 @@ public:
 
     // Returns true if ray is scattered, also sets attenuation and scattered ray
     virtual bool scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const;
+
+    virtual color emit(const HitRecord& rec) const;
 };
 
 class Lambertian : public Material {
@@ -46,4 +48,14 @@ private:
     color attenuation_color;
 
     static double reflectance(double cosine, double refraction_index);
+};
+
+class LightEmitter : public Material {
+public:
+    LightEmitter(const color& color) : emit_color(color) {}
+    bool scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const override;
+    color emit(const HitRecord& rec) const override;
+
+private:
+    color emit_color;
 };

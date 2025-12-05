@@ -3,10 +3,13 @@
 #include <cmath>
 #include "horizon/utility.h"
 
-// Base class default scatter
+// Base class
 bool Material::scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const {
     return false;
 }
+color Material::emit(const HitRecord& rec) const {
+    return color(0,0,0);
+};
 
 // ------------------ Lambertian ------------------
 Lambertian::Lambertian(const color& a) : albedo(a) {}
@@ -48,7 +51,7 @@ bool Dielectric::scatter(const ray& r_in, const HitRecord& rec, color& attenuati
     else
         direction = refract(unit_direction, rec.normal, ri);
 
-    scattered = ray(rec.p, direction); // time removed
+    scattered = ray(rec.p, direction);
     return true;
 }
 
@@ -57,4 +60,10 @@ double Dielectric::reflectance(double cosine, double refraction_index) {
     double r0 = (1 - refraction_index) / (1 + refraction_index);
     r0 = r0 * r0;
     return r0 + (1 - r0) * std::pow((1 - cosine), 5);
+}
+
+// ------------------ LightEmitter ------------------
+bool LightEmitter::scatter(const ray& r_in, const HitRecord& rec, color& attenuation, ray& scattered) const {return false;}
+color LightEmitter::emit(const HitRecord& rec) const {
+    return emit_color;
 }

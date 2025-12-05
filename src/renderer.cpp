@@ -54,11 +54,13 @@ color Renderer::ray_color(const ray& r, int depth, const RayObject& world) const
     if (world.hit(r, interval(0.001, 1e10), rec)) {
         ray scattered;
         color attenuation;
+        color emitted = rec.mat->emit(rec);
         if (rec.mat->scatter(r, rec, attenuation, scattered))
             return attenuation * ray_color(scattered, depth-1, world);
-        return color(0,0,0);
+        return emitted;
     }
 
+    ///Sky light
     vector3 unit_dir = unit_vector(r.direction());
     double t = 0.5*(unit_dir.y + 1.0);
     return (1.0 - t)*color(1.0,1.0,1.0) + t*color(0.5,0.7,1.0);
