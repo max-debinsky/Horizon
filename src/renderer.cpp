@@ -7,7 +7,7 @@
 Renderer::Renderer(int image_width, int image_height, int samples_per_pixel, int max_depth)
     : width(image_width), height(image_height), samples(samples_per_pixel), max_depth(max_depth) {}
 
-void Renderer::render(const Camera& cam, const RayObject& world, std::vector<std::vector<RGB>>& framebuffer) {
+void Renderer::render(const Camera& cam, const RayObject& world, std::vector<std::vector<RGB>>& framebuffer, color skyColor) {
     framebuffer.resize(height, std::vector<RGB>(width));
 
     const int bar_width = 50;
@@ -33,7 +33,7 @@ void Renderer::render(const Camera& cam, const RayObject& world, std::vector<std
                 double u = (i + random_double()) / (width - 1);
                 double v = (j + random_double()) / (height - 1);
                 ray r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, max_depth, world);
+                pixel_color += ray_color(r, max_depth, world, skyColor);
             }
 
             framebuffer[height - j - 1][i] = to_rgb(pixel_color / static_cast<double>(samples));
@@ -46,7 +46,7 @@ void Renderer::render(const Camera& cam, const RayObject& world, std::vector<std
 }
 
 
-color Renderer::ray_color(const ray& r, int depth, const RayObject& world) const {
+color Renderer::ray_color(const ray& r, int depth, const RayObject& world, color skyColor) const {
     if (depth <= 0)
         return color(0,0,0);
 
@@ -56,12 +56,12 @@ color Renderer::ray_color(const ray& r, int depth, const RayObject& world) const
         color attenuation;
         color emitted = rec.mat->emit(rec);
         if (rec.mat->scatter(r, rec, attenuation, scattered))
-            return attenuation * ray_color(scattered, depth-1, world);
+            return attenuation * ray_color(scattered, depth-1, world, skyColor);
         return emitted;
     }
 
     ///Sky light
     vector3 unit_dir = unit_vector(r.direction());
     double t = 0.5*(unit_dir.y + 1.0);
-    return (1.0 - t)*color(1.0,1.0,1.0) + t*color(0.5,0.7,1.0);
+    return skyColor; ///(1.0 - t)*color(1.0,1.0,1.0) + t*color(0.5,0.7,1.0);
 }
