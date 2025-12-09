@@ -1,5 +1,6 @@
 #pragma once
 
+#include "horizon/aabb.h"
 #include "horizon/ray.h"
 #include "horizon/vector3.h"
 #include "horizon/interval.h"
@@ -7,7 +8,7 @@
 
 using std::shared_ptr;
 
-class Material; // forward declaration
+class Material;
 
 struct HitRecord {
     point3 p;
@@ -27,4 +28,6 @@ public:
     virtual ~RayObject() = default;
 
     virtual bool hit(const ray& r, interval ray_t, HitRecord& rec) const = 0;
+
+    virtual aabb bounding_box() const = 0;
 };

@@ -20,6 +20,19 @@ public:
     vector3& operator*=(double t);
     vector3& operator/=(double t);
 
+    double operator[](int i) const {
+        if (i == 0) return x;
+        if (i == 1) return y;
+        return z;
+    }
+
+    double& operator[](int i) {
+        if (i == 0) return x;
+        if (i == 1) return y;
+        return z;
+    }
+
+
     double length_squared() const;
     double length() const;
 

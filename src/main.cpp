@@ -7,6 +7,7 @@
 #include "horizon/output.h"
 #include "horizon/utility.h"
 #include "horizon/sphere.h"
+#include "horizon/bvh.h"
 
 #include <memory>
 #include <vector>
@@ -75,7 +76,7 @@ void scene2(ObjectGroup& _world){
     _world.add(std::make_shared<Sphere>(point3(0, -20, 0), 20, MakeMaterial("ground"))); // large ground sphere
 
     // Sun
-    _world.add(std::make_shared<Sphere>(point3(-0.6946, 0.7, 20), 10, MakeMaterial("light")));
+    _world.add(std::make_shared<Sphere>(point3(-0.6946, 5, 20), 10, MakeMaterial("light")));
 
     // Main scene spheres
     //_world.add(std::make_shared<Sphere>(point3(0, 1, 0), 0.2, MakeMaterial("red"))); // center
@@ -92,12 +93,14 @@ int main() {
     const double aspect_ratio = 16.0 / 9.0;
     const int image_width = 1200;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 500;
-    const int max_depth = 50;
+    const int samples_per_pixel = 100;
+    const int max_depth = 500;
 
     // World (scene container)
     ObjectGroup world;
-    scene2(world);
+    scene2(world); // populate first
+
+    auto bvh_root = std::make_shared<BVHNode>(world.get_objects());
 
     // Camera
     point3 lookfrom(3,3,-10);
