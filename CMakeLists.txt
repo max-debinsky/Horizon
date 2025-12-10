@@ -21,6 +21,8 @@ set(SRC_FILES
     src/utility.cpp
     src/aabb.cpp
     src/bvh.cpp
+    src/mesh.cpp
+    src/triangle.cpp
 )
 
 add_executable(horizon ${SRC_FILES})

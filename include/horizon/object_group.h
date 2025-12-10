@@ -28,6 +28,8 @@ public:
     std::vector<shared_ptr<RayObject>>& get_objects() { return objects; }
     const std::vector<shared_ptr<RayObject>>& get_objects() const { return objects; }
 
+    friend class Mesh;
+
 private:
     std::vector<shared_ptr<RayObject>> objects;
     aabb bbox;

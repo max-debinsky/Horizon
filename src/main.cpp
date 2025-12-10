@@ -9,6 +9,8 @@
 #include "horizon/sphere.h"
 #include "horizon/bvh.h"
 #include "horizon/texture.h"
+#include "horizon/triangle.h"
+#include "horizon/mesh.h"
 
 #include <memory>
 #include <vector>
@@ -103,23 +105,48 @@ void scene2(ObjectGroup& _world){
     _world.add(std::make_shared<Sphere>(point3(3.0642, 0.9, -2.5712), 0.9, MakeMaterial("metal")));
 }
 
+void scene3(ObjectGroup& _world) {
+    // Ground plane
+    auto checker = std::make_shared<CheckerTexture>(
+        1.0,                  // size of the checkers
+        color(0.9, 0.9, 0.9), // even squares
+        color(0.1, 0.1, 0.1)  // odd squares
+    );
+    auto ground_material = std::make_shared<Lambertian>(checker);
+    _world.add(std::make_shared<Sphere>(point3(0, -1010, 0), 1000, ground_material));
+
+    // Emissive light above the scene
+    auto light_material = std::make_shared<LightEmitter>(color(1, 1, 1));
+    _world.add(std::make_shared<Sphere>(point3(0, 100, 0), 80.0, light_material));
+
+    // Load the ape mesh
+    auto ape_material = MakeMaterial("red"); // or "red", "glass", etc.
+    Mesh ape_mesh;
+    if (!ape_mesh.load_obj("ape.obj", ape_material)) {
+        std::cerr << "Failed to load ape.obj\n";
+        return;
+    }
+    _world.add(std::make_shared<Mesh>(ape_mesh));
+}
+
+
 int main() {
     // Image
     const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 600;
+    const int image_width = 300;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 1000;
-    const int max_depth = 50;
+    const int samples_per_pixel = 200;
+    const int max_depth = 10;
 
     // World (scene container)
     ObjectGroup world;
-    scene2(world); // populate first
+    scene3(world); // populate first
 
     auto bvh_root = std::make_shared<BVHNode>(world.get_objects());
 
     // Camera
-    point3 lookfrom(3,3,-10);
-    point3 lookat(0,1,0);
+    point3 lookfrom(0,1,6);
+    point3 lookat(0,0,0);
     vector3 vup(0,1,0);
     double vfov = 30.0;
     double focus_dist = 11.66;
