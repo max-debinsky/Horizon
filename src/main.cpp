@@ -8,6 +8,7 @@
 #include "horizon/utility.h"
 #include "horizon/sphere.h"
 #include "horizon/bvh.h"
+#include "horizon/texture.h"
 
 #include <memory>
 #include <vector>
@@ -47,7 +48,7 @@ std::shared_ptr<Material> MakeMaterial(const std::string& name) {
         return std::make_shared<Dielectric>(1.00 / 1.50);
     }
     if (key == "light" || key == "emissive") {
-        return std::make_shared<LightEmitter>(color(1, 1, 1));
+        return std::make_shared<LightEmitter>(color(4, 4, 4));
     }
     if (key == "purplelight") {
         return std::make_shared<LightEmitter>(color(0.36328125, 0.24609375, 0.82421875));
@@ -73,16 +74,30 @@ void scene1(ObjectGroup& _world){
 
 void scene2(ObjectGroup& _world){
     // Ground
-    _world.add(std::make_shared<Sphere>(point3(0, -20, 0), 20, MakeMaterial("ground"))); // large ground sphere
+    auto checker = std::make_shared<CheckerTexture>(
+    1.0,                // size / scale of the checkers
+    color(0.9, 0.9, 0.9), // color for “even” squares
+    color(0.1, 0.1, 0.1)  // color for “odd” squares
+    );
+    auto mat = std::make_shared<Lambertian>(checker);
+    _world.add(std::make_shared<Sphere>(point3(0, -20, 0), 20, mat)); // large ground sphere
 
     // Sun
     _world.add(std::make_shared<Sphere>(point3(-0.6946, 5, 20), 10, MakeMaterial("light")));
 
     // Main scene spheres
     //_world.add(std::make_shared<Sphere>(point3(0, 1, 0), 0.2, MakeMaterial("red"))); // center
-    _world.add(std::make_shared<Sphere>(point3(-3.7588, 0.6, -1.3681), 0.6, MakeMaterial("blue")));
+
+    auto checker2 = std::make_shared<CheckerTexture>(
+    0.1,                // size / scale of the checkers
+    color(0.2, 0.2, 0.9), // color for “even” squares
+    color(0.1, 0.1, 0.4)  // color for “odd” squares
+    );
+    auto mat2 = std::make_shared<Lambertian>(checker2);
+
+    _world.add(std::make_shared<Sphere>(point3(-3.7588, 0.6, -1.3681), 0.6, mat2));
     _world.add(std::make_shared<Sphere>(point3(-2.5712, 0.5, -3.0642), 0.5, MakeMaterial("green")));
-    _world.add(std::make_shared<Sphere>(point3(-0.6946, 0.7, -3.9392), 0.7, MakeMaterial("yellow")));
+    _world.add(std::make_shared<Sphere>(point3(-0.6946, 0.7, -3.9392), 0.7, mat2));
     _world.add(std::make_shared<Sphere>(point3(1.3681, 0.4, -3.7588), 0.4, MakeMaterial("glass")));
     _world.add(std::make_shared<Sphere>(point3(1.3681, 0.4, -3.7588), 0.3, MakeMaterial("bubble")));
     _world.add(std::make_shared<Sphere>(point3(3.0642, 0.9, -2.5712), 0.9, MakeMaterial("metal")));
@@ -91,10 +106,10 @@ void scene2(ObjectGroup& _world){
 int main() {
     // Image
     const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 1200;
+    const int image_width = 600;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 100;
-    const int max_depth = 500;
+    const int samples_per_pixel = 1000;
+    const int max_depth = 50;
 
     // World (scene container)
     ObjectGroup world;
