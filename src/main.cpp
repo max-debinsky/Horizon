@@ -120,7 +120,7 @@ void scene3(ObjectGroup& _world) {
     _world.add(std::make_shared<Sphere>(point3(0, 100, 0), 80.0, light_material));
 
     // Load the ape mesh
-    auto ape_material = MakeMaterial("red"); // or "red", "glass", etc.
+    auto ape_material = std::make_shared<Dielectric>(1.5); // or "red", "glass", etc.
     Mesh ape_mesh;
     if (!ape_mesh.load_obj("ape.obj", ape_material)) {
         std::cerr << "Failed to load ape.obj\n";
@@ -133,9 +133,9 @@ void scene3(ObjectGroup& _world) {
 int main() {
     // Image
     const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 300;
+    const int image_width = 600;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 200;
+    const int samples_per_pixel = ;
     const int max_depth = 10;
 
     // World (scene container)
